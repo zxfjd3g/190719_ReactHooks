@@ -18,13 +18,38 @@
 
   function A () {
 
+    const [count, setCount] = React.useState(1)
+    const h1Ref = React.useRef(null) // 创建一个用于保存<h1>的ref容器
+    const timeRef = React.useRef(0) // 创建一个用于保存当前时间的ref容器
+
+    function test1() {
+      setCount(count => count + 1)
+    }
+    function test2() {
+      alert(h1Ref.current.innerHTML)
+    }
+
+    function test3 () {
+      // 将时间保存到timeRef中
+      timeRef.current = Date.now()
+      alert('保存时间')
+    }
+    function test4 () {
+      const time = timeRef.current
+      if (time===0) {
+        alert('还没有保存时间')
+      } else {
+        alert('保存的时间为: ' + time)
+      }
+    }
+
     return (
       <div>
-        <h1>A组件</h1>
-        <button>数量增加1</button><br/><br/>
-        <button>提示标题内容</button><br/><br/>
-        <button>记录当前时间</button>
-        <button>读取记录的时间</button>
+        <h1 ref={h1Ref}>A组件: {count}</h1>
+        <button onClick={test1}>数量增加1</button><br/><br/>
+        <button onClick={test2}>提示标题内容</button><br/><br/>
+        <button onClick={test3}>记录当前时间</button>
+        <button onClick={test4}>读取记录的时间</button>
       </div>
     )
   }

@@ -16,12 +16,73 @@
 
 <script type="text/babel">
   /* 
-    需求1: 在浏览器容器标题上显示最新的count值
+    需求1: 在浏览器窗口标题上显示最新的count值
   */
+  function Counter() {
+    const [count, setCount] = React.useState(0)
+
+    // 将带副作用的操作放入useEffect()的回调函数
+    React.useEffect(function () { 
+      /* 
+      执行时机: 初始显示执行一次 / 每次更新也会执行
+      相当于重写了类组件的componentDidMount()和componentDidUpdate()
+      */
+      console.log('useEffect callback()')
+      // 执行带副作用的操作
+      document.title = count
+    })
+
+    return (
+      <div>
+        <p>click {count} times</p>  
+        <button onClick={() => {
+          setCount(count => count + 1)
+        }}>更新</button>
+      </div>
+    )
+  }
+
+  ReactDOM.render(<Counter/>, document.getElementById('example'))
+
 
   /*  
     需要2: 每隔1S自动增加2
   */
+  function Counter2() {
+    const [count, setCount] = React.useState(0)
+
+    // 将带副作用的操作放入useEffect()的回调函数
+    React.useEffect(function () { 
+      /* 
+      执行时机: 初始显示执行一次 / 每次更新也会执行
+      相当于重写了类组件的componentDidMount()
+      */
+      console.log('useEffect callback()222')
+      // 执行带副作用的操作
+      const intervalId = setInterval(() => {
+        console.log('setInterval()-----')
+        setCount(count => count + 2)
+      }, 1000);
+
+      return () => { // 相当于componentWillUnmount()
+        // 做收尾的工作: 清除定时器
+        clearInterval(intervalId)
+      }
+    }, []) // []: 代表状态数据变化, 回调函数不会重新执行
+
+    return (
+      <div>
+        <p>{count} times</p>  
+        <button onClick={() => {
+          ReactDOM.unmountComponentAtNode(document.getElementById('example2'))
+        }}>干掉组件</button>
+      </div>
+    )
+  }
+
+  ReactDOM.render(<Counter2/>, document.getElementById('example2'))
+
+
 </script>
 </body>
 </html>

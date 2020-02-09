@@ -33,6 +33,8 @@ Context是React组件直接向任意后代组件直接通信的技术
           {count => <h1>C组件: count={count}</h1>}
         </CountContext.Consumer>
 */
+  // 创建Context容器对象
+  const CountContext = React.createContext(-1)
 
   class A extends React.Component {
 
@@ -41,6 +43,9 @@ Context是React组件直接向任意后代组件直接通信的技术
     }
 
     test1 = () => {
+      // this.setState({
+      //   count: this.state.count + 1
+      // })
       this.setState(state => ({
         count: state.count + 1
       }))
@@ -53,7 +58,10 @@ Context是React组件直接向任意后代组件直接通信的技术
           <h1>A组件: count={this.state.count}</h1>
           <button onClick={this.test1}>A 测试</button>
           <hr/>
-          <B/>
+          <CountContext.Provider value={this.state.count}>
+            <B/>
+          </CountContext.Provider>
+          
         </div>
       )
     }
@@ -71,14 +79,21 @@ Context是React组件直接向任意后代组件直接通信的技术
   }
 
   class C extends React.Component {
+    static contextType = CountContext  // 声明后会自动将context对象中的value值保存到组件对象的context属性上
+
     render() {
-      return <h1>C组件</h1>
+      return <h1>C组件: {this.context}</h1>
     }
   }
 
   function D () {
     return (
-      <h1>D组件</h1>
+      <CountContext.Consumer>
+        {
+          count => <h1>D组件: {count}</h1>
+        }
+      </CountContext.Consumer>
+      
     )
   }
 

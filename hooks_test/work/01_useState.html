@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>useState</title>
+</head>
+<body>
+
+<div id="example1"></div>
+<hr/>
+<div id="example2"></div>
+
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+
+<script type="text/babel">
+
+  /* 使用类组件 */
+  class Counter_Class extends React.Component {
+
+    state = {
+      count: 0
+    }
+
+    increment = () => {
+      this.setState({
+        count: this.state.count + 1
+      })
+    }
+
+    render () {
+      return (
+        <div>
+          <p>click {this.state.count} times</p>  
+          <button onClick={this.increment}>增加</button>
+        </div>
+      )
+    }
+  }
+
+  /* 使用Hook定义带状态组件 */
+  /* 
+  1. useState()每次执行返回什么状态数据呢?
+    返回内部保存的状态数据, 第一次是先将指定的值保存为内部的状态数据再返回
+  2. useState()内部是用一个数组来管理多个状态数据, 与执行useState()的顺序一致
+    初始执行决定了内部多个状态数据的顺序
+    后面再执行useState()与第一次顺序只要是一致的就会取出正确对应的数据
+  */
+  function Counter_Hook(props) { // 在初始渲染执行第一次 / 一旦调用更新状态数据的函数更新的状态数据就会再次调用
+    console.log('Counter_Hook()')
+    /* 
+    useState(initValue): 返回一个数组
+    数组的第一元素就是内部保存的状态数据
+    数组的第二元素是一个用于更新当前状态数据的函数
+    */
+    const [count, setCount] = React.useState(1) // count状态
+    const [name, setName] = React.useState('atguigu') // name状态
+
+    function increment () { // 更新状态数据
+      // setCount(count + 1)
+      setCount(count => count + 1)
+      // setName(name + '--')
+      setName(name => name + '--')
+    }
+    
+    return (
+      <div>
+        <p>{name}</p>
+        <p>click {count} times</p>  
+        <button onClick={increment}>更新</button>
+      </div>
+    )
+  }
+
+  ReactDOM.render(<Counter_Class/>, document.getElementById('example1'))
+  ReactDOM.render(<Counter_Hook/>, document.getElementById('example2'))
+</script>
+</body>
+</html>
+

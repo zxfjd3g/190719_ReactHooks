@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Context</title>
+</head>
+<body>
+
+<div id="example"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+<script type="text/babel">
+
+/* 
+在线文档: https://react.docschina.org/docs/context.html
+Context是React组件直接向任意后代组件直接通信的技术
+1. 创建Context容器对象
+    const CountContext = React.createContext(defaultValue)
+2. 向后代组件提供状态数据
+    <CountContext.Provider value={this.state.count}>
+      <B/>
+    </CountContext.Provider>
+3. 后代组件读取数据
+    方式一(只能是类组件):
+        static contextType = CountContext;
+        const count = this.context
+    方式二(可以是函数组件): 
+        <CountContext.Consumer>
+          {count => <h1>C组件: count={count}</h1>}
+        </CountContext.Consumer>
+*/
+
+  // 创建Context容器对象
+  const CountContext = React.createContext(0)
+
+  class A extends React.Component {
+
+    state = {
+      count: 1
+    }
+
+    test1 = () => {
+      this.setState(state => ({
+        count: state.count + 1
+      }))
+    }
+
+    render() {
+      console.log('A render()')
+      return (
+        <div>
+          <h1>A组件: count={this.state.count}</h1>
+          <button onClick={this.test1}>A 测试1</button>
+          <hr/>
+          <CountContext.Provider value={this.state.count}>
+            <B/>
+          </CountContext.Provider>
+          
+        </div>
+      )
+    }
+  }
+
+  function B() {
+    return (
+      <div>
+        <h1>B组件</h1>
+        <hr/>
+        <C/>  
+        <D/>  
+      </div>
+    )
+  }
+
+  class C extends React.Component {
+    static contextType = CountContext;
+    render() {
+      return <h1>C组件: {this.context}</h1>
+    }
+  }
+
+  function D () {
+    return (
+      <CountContext.Consumer>
+        {
+          count => <h1>D组件: {count}</h1>
+        }
+      </CountContext.Consumer>
+      
+    )
+  }
+
+  ReactDOM.render(<A/>, document.getElementById('example'))
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>useState</title>
+</head>
+<body>
+
+<div id="example1"></div>
+<hr/>
+<div id="example2"></div>
+
+<script src="../js/react.development.js"></script>
+<script src="../js/react-dom.development.js"></script>
+<script src="../js/babel.min.js"></script>
+
+<script type="text/babel">
+
+  class Counter_Class extends React.Component {
+
+    state = {
+      count: 1
+    }
+
+    render () {
+      return (
+        <div>
+          <p>You clicked {this.state.count} times</p>
+          <button onClick={() => this.setState({count: this.state.count + 1})}>
+            Click me
+          </button>
+        </div>
+      )
+    }
+  }
+
+
+  function Counter_Hook() { // 组件函数会在初始渲染执行第一次, 后面会在内部状态数据变化后执行
+    /* 
+    useState(initValue) 返回一个数组
+    数组的第一个元素是内部管理的状态值
+    数组的第二个元素是一个更新状态值的函数函数
+    */
+    const [count, setCount] = React.useState(0);
+    const [name, setName] = React.useState('atguigu')
+
+    console.log('Counter_Hook()', count, name)
+    return (
+      <div>
+        <p>name: {name}</p>
+        <p>You clicked {count} times</p>
+        <button onClick={() => {
+          // setCount(count + 1)
+          setCount(count => count + 1)
+          setName(name => name + '--')
+        }}>
+          Click me
+        </button>
+      </div>
+    );
+  }
+
+  ReactDOM.render(<Counter_Hook/>, document.getElementById('example1'))
+  ReactDOM.render(<Counter_Class/>, document.getElementById('example2'))
+
+
+</script>
+</body>
+</html>
+

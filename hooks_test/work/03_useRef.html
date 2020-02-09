@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>useRef</title>
+</head>
+<body>
+
+<div id="example"></div>
+<div id="example2"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+
+
+<script type="text/babel">
+
+  function A () {
+
+    return (
+      <div>
+        <h1>A组件</h1>
+        <button>数量增加1</button><br/><br/>
+        <button>提示标题内容</button><br/><br/>
+        <button>记录当前时间</button>
+        <button>读取记录的时间</button>
+      </div>
+    )
+  }
+
+  ReactDOM.render(<A/>, document.getElementById('example'))
+
+</script>
+</body>
+</html>
+

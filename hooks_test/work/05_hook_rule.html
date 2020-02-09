@@ -21,6 +21,7 @@
 
     // 2. Use an effect for persisting the form
     React.useEffect(function persistName() {
+      // 带副作用的操作
       localStorage.setItem('name_key', name);
     });
 
@@ -28,14 +29,13 @@
     const [age, setAge] = React.useState(1);
 
     // 4. Use an effect for updating the title
-    //if (age<4) {
+    // if (age<4) {
       React.useEffect(function updateTitle() {
         if (age<4) {
           document.title = age;
         }
-        
       });
-    //}
+    // }
     
 
     function update () {

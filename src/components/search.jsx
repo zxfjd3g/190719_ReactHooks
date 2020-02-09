@@ -1,29 +1,29 @@
-import React, {Component} from 'react'
+import React, { useRef } from 'react'
 import PubSub from 'pubsub-js'
 
-export default class Search extends Component {
+export default function () {
 
-  search = () => {
+  const inputRef = useRef(null)
+
+  function search () {
     // 得到输入
-    const searchName = this.refs.searchName.value.trim()
+    const searchName = inputRef.current.value.trim()
     if(searchName) {
 
       // 发布消息(search)
       PubSub.publish('search', searchName)
 
-      this.refs.searchName.value = ''
+      inputRef.current.value = ''
     }
   }
 
-  render() {
-    return (
-      <section className="jumbotron">
-        <h3 className="jumbotron-heading">Search Github Users</h3>
-        <div>
-          <input type="text" placeholder="enter the name you search" ref='searchName'/>
-          <button onClick={this.search}>Search</button>
-        </div>
-      </section>
-    )
-  }
+  return (
+    <section className="jumbotron">
+      <h3 className="jumbotron-heading">Search Github Users</h3>
+      <div>
+        <input type="text" placeholder="enter the name you search" ref={inputRef}/>
+        <button onClick={search}>Search2</button>
+      </div>
+    </section>
+  )
 }
